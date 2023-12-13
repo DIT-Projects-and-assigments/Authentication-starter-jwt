@@ -19,7 +19,8 @@ const strategy = new JwtStrategy(options, function(jwt_payload, done) {
 
     console.log(jwt_payload);
 
-    db.getUserByUsername({username: jwt_payload.sub})
+    const user = jwt_payload.sub
+    db.getUserByUsername(user)
 
 
     .then(
@@ -29,10 +30,7 @@ const strategy = new JwtStrategy(options, function(jwt_payload, done) {
             if (user) {
                 return done(null, user);
             }
-            if(err)
-            {
-                return done (err, false)
-            }
+            
             else {
                 return done(null, false)
             }
@@ -40,9 +38,10 @@ const strategy = new JwtStrategy(options, function(jwt_payload, done) {
     )
 
     .catch((error) => {
-        if (error) { return done(error); }
+
        console.log(error)
-       return done(null, false);
+
+       return done(error, false);
         
     })
 

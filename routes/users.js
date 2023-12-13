@@ -96,6 +96,10 @@ router.post('/register', (req, res, next) => {
 
     
 });
+router.get('/protected', passport.authenticate('jwt', {session: false}), (req,res,next) =>
+{
+    res.status(200).json({success: true, msg: "You are authorized!!"})
+})
 
 module.exports = router;
 
