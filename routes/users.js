@@ -58,11 +58,12 @@ router.post('/register', (req, res, next) => {
         .then((result) =>
         {
             console.log("Admin Inserted successfuly")
-            res.redirect('/login')
+            res.status(200).json({success: true, msg:"The admin is aded successfuly to the App"})
         })
         .catch((err) =>
         {
-            console.log("There was an error occured during insertation...")
+            res.send(`The error ocured!. ${err.message}. Makesure you correct the error and try again.`)
+            console.log("There was an error occured during insertation... \n " + err)
         })
     }
     else
