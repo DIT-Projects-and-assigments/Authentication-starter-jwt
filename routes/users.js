@@ -26,6 +26,10 @@ router.post('/login', function(req, res, next){
             if (isValid) {
 
                 const tokenObject = utils.issueJWT(user);
+    
+                req.Authorization = tokenObject.token;
+
+                //console.log(req)
 
                 res.status(200).json({ success: true, user: user, token: tokenObject.token, expiresIn: tokenObject.expires });
 
@@ -58,6 +62,19 @@ router.post('/register', (req, res, next) => {
         .then((result) =>
         {
             console.log("Admin Inserted successfuly")
+
+            let insertedUser = {
+                username: req.body.username,
+                hash: hash,
+                salt: salt
+            }
+
+            console.log(insertedUser);
+
+            const JWT = utils.issueJWT(insertedUser)
+
+            req.jwt = JWT.token;
+
             res.status(200).json({success: true, msg:"The admin is aded successfuly to the App"})
         })
         .catch((err) =>
@@ -83,6 +100,8 @@ router.post('/register', (req, res, next) => {
             console.log(insertedUser);
 
             const JWT = utils.issueJWT(insertedUser)
+
+            req.jwt = JWT.token;
             
             res.json({success: true, user: insertedUser, token:JWT.token , issued: JWT.iat, expiresIn:JWT.expires})
 
